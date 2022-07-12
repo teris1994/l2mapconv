@@ -14,10 +14,6 @@ conditions:
     CMAKE_CXX_COMPILER_ID: GNU
   msvc:
     CMAKE_CXX_COMPILER_ID: MSVC
-  load-textures:
-    L2MAPCONV_LOAD_TEXTURES: true
-  load-terrain:
-    L2MAPCONV_LOAD_TERRAIN: true
 
 templates:
   default:
@@ -25,8 +21,8 @@ templates:
       properties:
         CXX_STANDARD: 20
         CXX_STANDARD_REQUIRED: true
-      if:
-        clang:
+      switch:
+        - if: clang
           compile-options: >-
             -Wall
             -Wextra
@@ -47,7 +43,7 @@ templates:
             -Wno-error=gnu-anonymous-struct
             -Wno-error=nested-anon-types
             -Wno-error=microsoft-enum-value
-        gcc:
+        - if: gcc
           compile-options: >-
             -Wall
             -Wextra
@@ -62,7 +58,7 @@ templates:
             -Wunused
             -Wdate-time
             -fno-extended-identifiers
-        msvc:
+        - if: msvc
           compile-options: >-
             /W4 /WX /utf-8 /wd4244 /wd4201 /wd4267
 
@@ -155,11 +151,11 @@ targets:
         L2MAPCONV_LOAD_TERRAIN:
           description: "Load terrain"
           default: true
-      if:
-        load-textures:
+      switch:
+        - if: L2MAPCONV_LOAD_TEXTURES
           definitions:
             LOAD_TEXTURES: 1
-        load-terrain:
+        - if: L2MAPCONV_LOAD_TERRAIN
           definitions:
             LOAD_TERRAIN: 1
 
