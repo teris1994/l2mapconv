@@ -80,7 +80,7 @@ struct Project {
 };
 
 struct Case {
-  Name case_;
+  std::string case_;
   Project project;
 };
 
