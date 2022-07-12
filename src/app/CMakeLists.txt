@@ -7,6 +7,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE doctest
     PRIVATE cxxopts
     PRIVATE yaml-cpp
+    PRIVATE libgit2package
 )
 
 # Rename executable

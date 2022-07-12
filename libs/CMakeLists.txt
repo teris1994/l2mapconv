@@ -20,3 +20,9 @@ add_subdirectory(cxxopts)
 
 # yaml-cpp
 add_subdirectory(yaml-cpp)
+
+# libgit2
+set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "" FORCE)
+set(BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
+set(BUILD_CLI OFF CACHE INTERNAL "" FORCE)
+add_subdirectory(libgit2)

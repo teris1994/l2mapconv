@@ -1,0 +1,228 @@
+name: l2mapconv
+
+include:
+  - conditions.yml
+  - templates.yml
+  - libs.yml
+  - src.yml
+
+conditions:
+  clang: >-
+    CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
+    CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"
+  gcc:
+    CMAKE_CXX_COMPILER_ID: GNU
+  msvc:
+    CMAKE_CXX_COMPILER_ID: MSVC
+  load-textures:
+    L2MAPCONV_LOAD_TEXTURES: true
+  load-terrain:
+    L2MAPCONV_LOAD_TERRAIN: true
+
+templates:
+  default:
+    project:
+      properties:
+        CXX_STANDARD: 20
+        CXX_STANDARD_REQUIRED: true
+      if:
+        clang:
+          compile-options: >-
+            -Wall
+            -Wextra
+            -Werror
+            -Wpedantic
+            -Wshadow-all
+            -Wunused
+            -Wunused-member-function
+            -Wdate-time
+            -Wthread-safety
+            -Wloop-analysis
+            -Wconditional-uninitialized
+            -Wsuggest-override
+            -Wunreachable-code-aggressive
+            -Wimplicit-fallthrough
+
+            -Wno-error=shadow-field-in-constructor
+            -Wno-error=gnu-anonymous-struct
+            -Wno-error=nested-anon-types
+            -Wno-error=microsoft-enum-value
+        gcc:
+          compile-options: >-
+            -Wall
+            -Wextra
+            -Werror
+            -Wpedantic
+            -Wall
+            -Wextra
+            -Werror
+            -Wpedantic
+            -Wshadow=local
+            -Wredundant-decls
+            -Wunused
+            -Wdate-time
+            -fno-extended-identifiers
+        msvc:
+          compile-options: >-
+            /W4 /WX /utf-8 /wd4244 /wd4201 /wd4267
+
+targets:
+  cxxopts:
+    path: libs/cxxopts
+    repository: https://github.com/jarro2783/cxxopts
+
+  glew:
+    path: libs/glew
+    repository: https://github.com/Perlmint/glew-cmake
+    overrides:
+      glew-cmake_BUILD_SHARED: false
+      ONLY_LIBS: true
+
+  glfw:
+    path: libs/glfw
+    repository: https://github.com/glfw/glfw
+    overrides:
+      GLFW_BUILD_DOCS: false
+      GLFW_INSTALL: false
+
+  glm:
+    path: libs/glfw
+    repository: https://github.com/g-truc/glm
+
+  imgui:
+    path: libs/imgui
+    repository: https://github.com/ocornut/imgui
+    project:
+      type: library
+      sources: imgui
+      includes: [imgui, .]
+      dependencies: [glfw, libglew_static]
+      properties:
+        CXX_STANDARD: 20
+        CXX_STANDARD_REQUIRED: true
+
+  llvm:
+    path: libs/llvm
+    project:
+      type: interface
+      includes: include
+
+  recast:
+    path: libs/recast
+    repository: https://github.com/recastnavigation/recastnavigation
+    patches: patches/recast.patch
+    overrides:
+      RECASTNAVIGATION_DEMO: false
+      RECASTNAVIGATION_TESTS: false
+      RECASTNAVIGATION_EXAMPLES: false
+
+  stb:
+    path: libs/stb
+    repository:
+      url: https://github.com/nothings/stb
+      subdirectory: stb
+    project:
+      type: library
+      sources: src
+      includes: .
+
+  app:
+    path: src/app
+    templates: default
+    project:
+      type: executable
+      sources: src
+      pchs: src/pch.h
+      dependencies:
+        - utils
+        - geometry
+        - unreal
+        - rendering
+        - geodata
+        - glfw
+        - libglew_static
+        - glm
+        - imgui
+        - cxxopts
+      properties:
+        OUTPUT_NAME: l2mapconv
+      options:
+        L2MAPCONV_LOAD_TEXTURES:
+          description: "Load textures"
+          default: false
+        L2MAPCONV_LOAD_TERRAIN:
+          description: "Load terrain"
+          default: true
+      if:
+        load-textures:
+          definitions:
+            LOAD_TEXTURES: 1
+        load-terrain:
+          definitions:
+            LOAD_TERRAIN: 1
+
+  utils:
+    path: src/utils
+    templates: default
+    project:
+      type: library
+      sources: src
+      includes: include
+      dependencies:
+        - name: llvm
+          type: public
+
+  unreal:
+    path: src/unreal
+    templates: default
+    project:
+      type: library
+      sources: src
+      includes: include
+      pchs: src/pch.h
+      dependencies:
+        - utils: public
+
+  rendering:
+    path: src/rendering
+    templates: default
+    project:
+      type: library
+      sources: src
+      includes: include
+      pchs: src/pch.h
+      dependencies:
+        - utils
+        - geometry
+        - libglew_static
+        - glm
+        - stb
+
+  geometry:
+    path: src/geometry
+    templates: default
+    project:
+      type: library
+      sources: src
+      includes: include
+      dependencies: [utils, glm]
+
+  geodata:
+    path: src/geodata
+    templates: default
+    project:
+      type: library
+      sources: src
+      includes: include
+      pchs: src/pch.h
+      dependencies:
+        - utils
+        - geometry
+        - llvm
+        - glm
+        - Recast
+      options:
+        L2MAPCONV_GEODATA_POST_PROCESSING:
+          description: "Geodata post-processing"
+          default: true
+          definition: GEODATA_POST_PROCESSING
