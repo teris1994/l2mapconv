@@ -7,14 +7,22 @@
 
 namespace config {
 
+struct Name {
+  std::string name;
+};
+
+struct URL {
+  std::string url;
+};
+
 struct Conditions {
-  std::map<std::string, std::string> conditions;
+  std::map<Name, std::string> conditions;
   std::string condition;
 };
 
 struct Repository {
-  std::string url;
-  std::string branch;
+  URL url;
+  Name branch;
   std::filesystem::path subdirectory;
 };
 
@@ -32,32 +40,33 @@ enum class Inheritance {
 
 struct Include {
   std::filesystem::path directory;
-  Inheritance inheritance;
+  Inheritance inheritance = Inheritance::Public;
 };
 
 struct PCH {
   std::filesystem::path path;
-  Inheritance inheritance;
+  Inheritance inheritance = Inheritance::Private;
 };
 
 struct Dependency {
-  Inheritance inheritance;
+  Name name;
+  Inheritance inheritance = Inheritance::Private;
 };
 
 struct Option {
   std::string description;
   std::string default_;
-  std::string definition;
+  Name definition;
 };
 
 struct Settings {
-  std::map<std::string, Option> options;
-  std::map<std::string, std::string> sets;
+  std::map<Name, Option> options;
+  std::map<Name, std::string> variables;
 };
 
 struct ProjectDefinition {
   std::string value;
-  Inheritance inheritance;
+  Inheritance inheritance = Inheritance::Private;
 };
 
 struct Project {
@@ -65,13 +74,13 @@ struct Project {
   std::vector<std::filesystem::path> sources;
   std::vector<Include> includes;
   std::vector<PCH> pchs;
-  std::map<std::string, Dependency> dependencies;
+  std::vector<Dependency> dependencies;
   Settings settings;
-  std::map<std::string, ProjectDefinition> definitions;
+  std::map<Name, ProjectDefinition> definitions;
 };
 
 struct Case {
-  std::string case_;
+  Name case_;
   Project project;
 };
 
@@ -88,23 +97,23 @@ struct Template {
   std::filesystem::path path;
   Repository repository;
   std::vector<std::filesystem::path> patches;
-  std::map<std::string, std::string> overrides;
+  std::map<Name, std::string> overrides;
   SwitchProject project;
 };
 
 struct Target {
   Template target;
-  std::vector<std::string> templates;
+  std::vector<Name> templates;
 };
 
 struct Config {
-  std::string name;
-  std::vector<std::string> include;
-  std::map<std::string, Conditions> conditions;
-  std::map<std::string, Template> templates;
-  std::map<std::string, Target> targets;
+  Name name;
+  std::vector<std::filesystem::path> include;
+  std::map<Name, Conditions> conditions;
+  std::map<Name, Template> templates;
+  std::map<Name, Target> targets;
   Settings settings;
-  std::map<std::string, std::string> definitions;
+  std::map<Name, std::string> definitions;
 };
 
 } // namespace config
