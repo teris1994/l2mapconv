@@ -22,7 +22,7 @@ templates:
         CXX_STANDARD: 20
         CXX_STANDARD_REQUIRED: true
       switch:
-        - if: clang
+        - case: clang
           compile-options: >-
             -Wall
             -Wextra
@@ -43,7 +43,7 @@ templates:
             -Wno-error=gnu-anonymous-struct
             -Wno-error=nested-anon-types
             -Wno-error=microsoft-enum-value
-        - if: gcc
+        - case: gcc
           compile-options: >-
             -Wall
             -Wextra
@@ -58,7 +58,7 @@ templates:
             -Wunused
             -Wdate-time
             -fno-extended-identifiers
-        - if: msvc
+        - case: msvc
           compile-options: >-
             /W4 /WX /utf-8 /wd4244 /wd4201 /wd4267
 
@@ -152,10 +152,10 @@ targets:
           description: "Load terrain"
           default: true
       switch:
-        - if: L2MAPCONV_LOAD_TEXTURES
+        - case: L2MAPCONV_LOAD_TEXTURES
           definitions:
             LOAD_TEXTURES: 1
-        - if: L2MAPCONV_LOAD_TERRAIN
+        - case: L2MAPCONV_LOAD_TERRAIN
           definitions:
             LOAD_TERRAIN: 1
 
@@ -167,8 +167,8 @@ targets:
       sources: src
       includes: include
       dependencies:
-        - name: llvm
-          type: public
+        llvm:
+          inheritance: public
 
   unreal:
     path: src/unreal

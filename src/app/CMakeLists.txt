@@ -10,5 +10,4 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE libgit2package
 )
 
-# Rename executable
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "vanity")

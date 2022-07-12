@@ -1,4 +1,5 @@
 set(TARGETS
+    config
     app
 )
 
