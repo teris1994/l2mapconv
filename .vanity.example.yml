@@ -80,7 +80,9 @@ targets:
 
   glfw:
     path: libs/glfw
-    repository: https://github.com/glfw/glfw
+    repository:
+      url: https://github.com/glfw/glfw
+      branch: master
     overrides:
       GLFW_BUILD_DOCS: false
       GLFW_INSTALL: false

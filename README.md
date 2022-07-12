@@ -1,1 +1,1 @@
-# sickmind
+# vanity
