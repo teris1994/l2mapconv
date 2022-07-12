@@ -1,0 +1,10 @@
+.DS_Store
+.vs/
+.vscode/
+.cmake/
+Testing/
+CMakeLists.txt.user
+build/
+out/
+*.autosave
+TODO

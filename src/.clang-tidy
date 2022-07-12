@@ -1,0 +1,15 @@
+Checks: >-
+    bugprone-*,
+    clang-*,
+    concurrency-*,
+    cppcoreguidelines-*,
+    google-*,
+    hicpp-*,
+    llvm-*,
+    modernize-*,
+    performance-*,
+    portability-*,
+    readability-*,
+    -llvm-header-guard,
+
+WarningsAsErrors: '*'
