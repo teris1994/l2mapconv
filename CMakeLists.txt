@@ -21,7 +21,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
         -pedantic
     )
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set(TARGET_COMPILE_OPTIONS /W4 /WX /utf-8 /wd4251 /wd4275)
+    set(TARGET_COMPILE_OPTIONS /W4 /WX /utf-8)
 endif()
 
 # Global target properties

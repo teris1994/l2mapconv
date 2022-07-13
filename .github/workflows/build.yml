@@ -18,9 +18,9 @@ jobs:
           - os: macos-latest
             compiler: { c: clang, cpp: clang++ }
             generator: Unix Makefiles
-          - os: windows-latest
-            compiler: { c: cl, cpp: cl }
-            generator: Visual Studio 17 2022
+          # - os: windows-latest
+          #   compiler: { c: cl, cpp: cl }
+          #   generator: Visual Studio 17 2022
           - os: windows-latest
             compiler: { c: clang, cpp: clang++ }
             generator: Ninja
