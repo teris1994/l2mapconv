@@ -25,6 +25,7 @@ struct Repository {
   URL url;
   Name branch;
   std::filesystem::path subdirectory;
+  std::vector<std::filesystem::path> patches;
 };
 
 enum class ProjectType {
@@ -103,7 +104,6 @@ struct SwitchProject {
 struct Template {
   std::filesystem::path path;
   Repository repository;
-  std::vector<std::filesystem::path> patches;
   std::map<Name, std::string> overrides;
   SwitchProject project;
 };

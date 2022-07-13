@@ -49,10 +49,6 @@ templates:
             -Wextra
             -Werror
             -Wpedantic
-            -Wall
-            -Wextra
-            -Werror
-            -Wpedantic
             -Wshadow=local
             -Wredundant-decls
             -Wunused
@@ -89,7 +85,9 @@ targets:
 
   imgui:
     path: libs/imgui
-    repository: https://github.com/ocornut/imgui
+    repository:
+      url: https://github.com/ocornut/imgui
+      subdirectory: imgui
     project:
       type: library
       sources: imgui
@@ -107,8 +105,9 @@ targets:
 
   recast:
     path: libs/recast
-    repository: https://github.com/recastnavigation/recastnavigation
-    patches: patches/recast.patch
+    repository:
+      url: https://github.com/recastnavigation/recastnavigation
+      patches: patches/recast.patch
     overrides:
       RECASTNAVIGATION_DEMO: false
       RECASTNAVIGATION_TESTS: false
@@ -167,7 +166,7 @@ targets:
       sources: src
       includes: include
       dependencies:
-        llvm:
+        - name: llvm
           inheritance: public
 
   unreal:
