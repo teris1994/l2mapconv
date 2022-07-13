@@ -12,4 +12,6 @@ auto parse(const std::istream & /*input*/) -> Config {
   return config;
 }
 
+auto read(const std::filesystem::path &path) -> Config {}
+
 } // namespace config

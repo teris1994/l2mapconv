@@ -115,7 +115,7 @@ struct Target {
 
 struct Config {
   Name name;
-  std::vector<std::filesystem::path> include;
+  std::vector<std::filesystem::path> includes;
   std::map<Name, Conditions> conditions;
   std::map<Name, Template> templates;
   std::map<Name, Target> targets;
@@ -124,6 +124,6 @@ struct Config {
   std::vector<std::string> compile_options;
 };
 
-auto parse(const std::istream &input) -> Config;
+auto read(const std::filesystem::path &path) -> Config;
 
 } // namespace config
