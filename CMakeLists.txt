@@ -8,23 +8,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${INSTALL_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${INSTALL_DIR})
 
 # Global target compile options
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(TARGET_COMPILE_OPTIONS
-        -Wall
-        -Wextra
-        -Werror
-        -Wpedantic
-        -Wall
-        -Wextra
-        -Werror
-        -Wpedantic
-        -Wshadow
-        -Wredundant-decls
-        -Wunused
-        -Wdate-time
-        -fno-extended-identifiers
-    )
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
+    CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
     CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
 
     set(TARGET_COMPILE_OPTIONS
@@ -32,21 +17,11 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
         -Wextra
         -Werror
         -Wpedantic
-        -Wshadow-all
-        -Wunused
-        -Wunused-member-function
-        -Wdate-time
-        -Wthread-safety
-        -Wloop-analysis
-        -Wconditional-uninitialized
-        -Wsuggest-override
-        -Wunreachable-code-aggressive
-        -Wimplicit-fallthrough
-
-        -Wno-error=documentation
+        -pedantic-errors
+        -pedantic
     )
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set(TARGET_COMPILE_OPTIONS /W4 /WX /utf-8)
+    set(TARGET_COMPILE_OPTIONS /W4 /WX /utf-8 /wd4251 /wd4275)
 endif()
 
 # Global target properties

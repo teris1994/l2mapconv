@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <istream>
 #include <map>
 #include <string>
 #include <vector>
@@ -69,6 +70,11 @@ struct ProjectDefinition {
   Inheritance inheritance = Inheritance::Private;
 };
 
+struct CompileOption {
+  std::string option;
+  Inheritance inheritance = Inheritance::Private;
+};
+
 struct Project {
   ProjectType type;
   std::vector<std::filesystem::path> sources;
@@ -77,6 +83,7 @@ struct Project {
   std::vector<Dependency> dependencies;
   Settings settings;
   std::map<Name, ProjectDefinition> definitions;
+  std::vector<CompileOption> compile_options;
 };
 
 struct Case {
@@ -114,6 +121,9 @@ struct Config {
   std::map<Name, Target> targets;
   Settings settings;
   std::map<Name, std::string> definitions;
+  std::vector<std::string> compile_options;
 };
+
+auto parse(const std::istream &input) -> Config;
 
 } // namespace config
