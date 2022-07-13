@@ -1,6 +1,8 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include <doctest/doctest.h>
 
+#include <config/Config.h>
+
 #include <iostream>
 
 auto app(int /*argc*/, char ** /*argv*/) -> int;
@@ -19,6 +21,7 @@ auto main(int argc, char **argv) -> int {
 }
 
 auto app(int /*argc*/, char ** /*argv*/) -> int {
-  std::cout << "hello, World!" << std::endl;
+  std::cout << "Hello, World!" << std::endl;
+  config::read(".vanity.yml");
   return EXIT_SUCCESS;
 }

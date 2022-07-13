@@ -8,22 +8,14 @@
 
 namespace config {
 
-struct Name {
-  std::string name;
-};
-
-struct URL {
-  std::string url;
-};
-
 struct Conditions {
-  std::map<Name, std::string> conditions;
+  std::map<std::string, std::string> conditions;
   std::string condition;
 };
 
 struct Repository {
-  URL url;
-  Name branch;
+  std::string url;
+  std::string branch;
   std::filesystem::path subdirectory;
   std::vector<std::filesystem::path> patches;
 };
@@ -51,19 +43,19 @@ struct PCH {
 };
 
 struct Dependency {
-  Name name;
+  std::string name;
   Inheritance inheritance = Inheritance::Private;
 };
 
 struct Option {
   std::string description;
   std::string default_;
-  Name definition;
+  std::string definition;
 };
 
 struct Settings {
-  std::map<Name, Option> options;
-  std::map<Name, std::string> variables;
+  std::map<std::string, Option> options;
+  std::map<std::string, std::string> variables;
 };
 
 struct ProjectDefinition {
@@ -83,7 +75,7 @@ struct Project {
   std::vector<PCH> pchs;
   std::vector<Dependency> dependencies;
   Settings settings;
-  std::map<Name, ProjectDefinition> definitions;
+  std::map<std::string, ProjectDefinition> definitions;
   std::vector<CompileOption> compile_options;
 };
 
@@ -104,23 +96,23 @@ struct SwitchProject {
 struct Template {
   std::filesystem::path path;
   Repository repository;
-  std::map<Name, std::string> overrides;
+  std::map<std::string, std::string> overrides;
   SwitchProject project;
 };
 
 struct Target {
   Template target;
-  std::vector<Name> templates;
+  std::vector<std::string> templates;
 };
 
 struct Config {
-  Name name;
+  std::string name;
   std::vector<std::filesystem::path> includes;
-  std::map<Name, Conditions> conditions;
-  std::map<Name, Template> templates;
-  std::map<Name, Target> targets;
+  std::map<std::string, Conditions> conditions;
+  std::map<std::string, Template> templates;
+  std::map<std::string, Target> targets;
   Settings settings;
-  std::map<Name, std::string> definitions;
+  std::map<std::string, std::string> definitions;
   std::vector<std::string> compile_options;
 };
 

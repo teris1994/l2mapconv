@@ -1,17 +1,16 @@
 #include <config/Config.h>
 
+#include "Parse.h"
+
 #include <yaml-cpp/yaml.h>
+
+#include <fstream>
 
 namespace config {
 
-void operator>>(const YAML::Node & /*node*/, Config & /*config*/) {}
-
-auto parse(const std::istream & /*input*/) -> Config {
-  Config config;
-
-  return config;
+auto read(const std::filesystem::path &path) -> Config {
+  std::ifstream file{path};
+  return parse(file);
 }
-
-auto read(const std::filesystem::path &path) -> Config {}
 
 } // namespace config

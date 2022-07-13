@@ -7,7 +7,7 @@ VANITY_BUILD_TESTS ?= OFF
 export CC = $(VANITY_CC)
 export CXX = $(VANITY_CXX)
 
-BUILD_DIR = "build/$(VANITY_BUILD_TYPE)"
+BUILD_DIR = "build"
 
 .PHONY: configure
 configure:
