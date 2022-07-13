@@ -56,7 +56,7 @@ template <typename T, Inheritance> struct InheritanceLists {
 };
 
 struct Project {
-  ProjectType type = ProjectType::Executable;
+  ProjectType type = ProjectType::Executable; // todo: string?
   std::vector<std::filesystem::path> sources;
   InheritanceLists<std::filesystem::path, Inheritance::Public> includes;
   InheritanceLists<std::filesystem::path, Inheritance::Private> pchs;

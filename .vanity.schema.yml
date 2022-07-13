@@ -1,0 +1,75 @@
+settings:
+  strict_order: true
+  strict_optionals: true
+
+types:
+  list<T>:
+    - T
+    - [T]
+
+  map<K, V>: { $K: V }
+
+  inheritance<T>:
+    - T
+    - public?: T
+      private?: T
+      interface?: T
+
+  settings:
+    options?:
+      $string:
+        description: string
+        default: scalar
+        definition?: string
+    variables?: { $string: scalar }
+
+  project:
+    settings@: settings
+    type: string
+    sources?: list<string>
+    includes?: inheritance<list<string>>
+    pchs?: inheritance<list<string>>
+    dependencies?: inheritance<list<string>>
+    definitions?:
+      - inheritance<list<string>>
+      - inheritance<map<string, scalar>>
+    compile_options?:
+      - inheritance<list<string>>
+      - inheritance<map<string, scalar>>
+    properties?:
+      - inheritance<list<string>>
+      - inheritance<map<string, scalar>>
+
+  switch<T>:
+    embed@: T
+    switch?:
+      - case: string
+        embed@: T
+
+  template:
+    path: string
+    subdirectory?: string
+    remote?:
+      - string
+      - git: string
+        branch?: string
+    patches?: list<string>
+    overrides?: switch<map<string, scalar>>
+    project?: switch<project>
+
+  root@:
+    name: string
+    includes?: list<string>
+    templates?:
+      $string: template
+    settings@: switch<settings>
+    conditions?:
+      - { $string: string }
+      - { $string: { $string: scalar } }
+    targets:
+      $string:
+        templates?:
+          - list<string>
+          - list: list<string>
+            attributes: { $string: any }
+        target@: template
