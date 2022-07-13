@@ -166,8 +166,7 @@ targets:
       sources: src
       includes: include
       dependencies:
-        - name: llvm
-          inheritance: public
+        - llvm
 
   unreal:
     path: src/unreal
@@ -178,7 +177,8 @@ targets:
       includes: include
       pchs: src/pch.h
       dependencies:
-        - utils: public
+        public:
+          - utils
 
   rendering:
     path: src/rendering

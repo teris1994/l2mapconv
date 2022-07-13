@@ -8,6 +8,12 @@
 
 namespace config {
 
+enum class Inheritance {
+  Public,
+  Private,
+  Interface,
+};
+
 struct Conditions {
   std::map<std::string, std::string> conditions;
   std::string condition;
@@ -26,27 +32,6 @@ enum class ProjectType {
   Interface,
 };
 
-enum class Inheritance {
-  Public,
-  Private,
-  Interface,
-};
-
-struct Include {
-  std::filesystem::path directory;
-  Inheritance inheritance = Inheritance::Public;
-};
-
-struct PCH {
-  std::filesystem::path path;
-  Inheritance inheritance = Inheritance::Private;
-};
-
-struct Dependency {
-  std::string name;
-  Inheritance inheritance = Inheritance::Private;
-};
-
 struct Option {
   std::string description;
   std::string default_;
@@ -58,34 +43,36 @@ struct Settings {
   std::map<std::string, std::string> variables;
 };
 
-struct ProjectDefinition {
-  std::string value;
-  Inheritance inheritance = Inheritance::Private;
+template <typename T, Inheritance> struct InheritanceMaps {
+  std::map<std::string, T> public_;
+  std::map<std::string, T> private_;
+  std::map<std::string, T> interface;
 };
 
-struct CompileOption {
-  std::string option;
-  Inheritance inheritance = Inheritance::Private;
+template <typename T, Inheritance> struct InheritanceLists {
+  std::vector<T> public_;
+  std::vector<T> private_;
+  std::vector<T> interface;
 };
 
 struct Project {
-  ProjectType type;
+  ProjectType type = ProjectType::Executable;
   std::vector<std::filesystem::path> sources;
-  std::vector<Include> includes;
-  std::vector<PCH> pchs;
-  std::vector<Dependency> dependencies;
+  InheritanceLists<std::filesystem::path, Inheritance::Public> includes;
+  InheritanceLists<std::filesystem::path, Inheritance::Private> pchs;
+  InheritanceLists<std::string, Inheritance::Private> dependencies;
   Settings settings;
-  std::map<std::string, ProjectDefinition> definitions;
-  std::vector<CompileOption> compile_options;
+  InheritanceLists<std::string, Inheritance::Private> definitions;
+  InheritanceMaps<std::string, Inheritance::Private> compile_options;
 };
 
-struct Case {
+struct SwitchCase {
   std::string case_;
   Project project;
 };
 
 struct Switch {
-  std::vector<Case> cases;
+  std::vector<SwitchCase> cases;
 };
 
 struct SwitchProject {
