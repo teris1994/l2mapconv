@@ -1,6 +1,5 @@
 settings:
   strict_order: true
-  strict_optionals: true
 
 types:
   list<T>:
@@ -11,65 +10,66 @@ types:
 
   inheritance<T>:
     - T
-    - public?: T
-      private?: T
-      interface?: T
+    - public: !optional T
+      private: !optional T
+      interface: !optional T
 
   settings:
-    options?:
+    options: !optional
       $string:
         description: string
         default: scalar
-        definition?: string
-    variables?: { $string: scalar }
+        definition: !optional string
+    variables: !optional { $string: scalar }
 
   project:
-    settings@: settings
+    settings: !embed settings
     type: string
-    sources?: list<string>
-    includes?: inheritance<list<string>>
-    pchs?: inheritance<list<string>>
-    dependencies?: inheritance<list<string>>
-    definitions?:
+    sources: !optional list<string>
+    includes: !optional inheritance<list<string>>
+    pchs: !optional inheritance<list<string>>
+    dependencies: !optional inheritance<list<string>>
+    definitions: !optional
       - inheritance<list<string>>
       - inheritance<map<string, scalar>>
-    compile_options?:
+    compile_options: !optional
       - inheritance<list<string>>
       - inheritance<map<string, scalar>>
-    properties?:
+    properties: !optional
       - inheritance<list<string>>
       - inheritance<map<string, scalar>>
 
   switch<T>:
-    embed@: T
-    switch?:
+    embed: !embed T
+    switch: !optional
       - case: string
-        embed@: T
+        embed: !embed T
 
   template:
     path: string
-    subdirectory?: string
-    remote?:
+    subdirectory: !optional string
+    remote: !optional
       - string
       - git: string
-        branch?: string
-    patches?: list<string>
-    overrides?: switch<map<string, scalar>>
-    project?: switch<project>
+        branch: !optional string
+    patches: !optional list<string>
+    overrides: !optional switch<map<string, scalar>>
+    project: !optional switch<project>
 
-  root@:
-    name: string
-    includes?: list<string>
-    templates?:
-      $string: template
-    settings@: switch<settings>
-    conditions?:
-      - { $string: string }
-      - { $string: { $string: scalar } }
-    targets:
-      $string:
-        templates?:
-          - list<string>
-          - list: list<string>
-            attributes: { $string: any }
-        target@: template
+root:
+  name: string
+  includes: !optional list<string>
+  templates: !optional
+    $string: !force-optional template
+  settings: !embed switch<settings>
+  conditions: !optional
+    $string:
+      - string
+      - { $string: scalar }
+  targets:
+    $string:
+      templates: !optional
+        - list<string>
+        - list: list<string>
+          attributes: { $string: any }
+      target: !embed template
